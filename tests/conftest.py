@@ -1,5 +1,5 @@
 import pytest
-from playwright.sync_api import Playwright, Page
+from playwright.sync_api import Page, Playwright
 
 
 @pytest.fixture
@@ -8,8 +8,9 @@ def chromium_page(playwright: Playwright) -> Page:
     yield browser.new_page()
     browser.close()
 
+
 @pytest.fixture(scope="session")
-def initialize_browser_state(playwright: Playwright) -> Page:
+def initialize_browser_state(playwright: Playwright):
     browser = playwright.chromium.launch(headless=False)
     context = browser.new_context()
     page = context.new_page()
@@ -32,10 +33,9 @@ def initialize_browser_state(playwright: Playwright) -> Page:
     browser.close()
 
 
-@pytest.fixture(scope="function")
+@pytest.fixture
 def chromium_page_with_state(initialize_browser_state, playwright: Playwright) -> Page:
     browser = playwright.chromium.launch(headless=False)
-    context = browser.new_context(storage_state="browser-state.json")  # Указываем файл с сохраненным состоянием
-    page = context.new_page()
-    yield page
+    context = browser.new_context(storage_state="browser-state.json")
+    yield context.new_page()
     browser.close()
