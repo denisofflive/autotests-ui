@@ -9,6 +9,9 @@ from tools.allure.features import AllureFeature # Импортируем enum Al
 from tools.allure.stories import AllureStory # Импортируем enum AllureStory
 from tools.allure.tags import AllureTag
 from allure_commons.types import Severity
+from tools.allure.suite import AllureSuite
+from tools.allure.sub_suite import AllureSubSuite
+from tools.allure.parent_suite import AllureParentSuite
 
 
 @pytest.mark.regression
@@ -17,6 +20,9 @@ from allure_commons.types import Severity
 @allure.epic(AllureEpic.LMS) # Добавили epic
 @allure.feature(AllureFeature.AUTHENTICATION) # Добавили feature
 @allure.story(AllureStory.AUTHORIZATION) # Добавили story
+@allure.parent_suite(AllureParentSuite.LMS)
+@allure.suite(AllureSuite.AUTHENTICATION)
+@allure.sub_suite(AllureSubSuite.AUTHORIZATION)
 class TestAuthorization:
     # Остальной код без изменений
 

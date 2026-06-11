@@ -8,6 +8,9 @@ from tools.allure.features import AllureFeature # Импортируем enum Al
 from tools.allure.stories import AllureStory # Импортируем enum AllureStory
 from tools.allure.tags import AllureTag
 from allure_commons.types import Severity
+from tools.allure.parent_suite import AllureParentSuite
+from tools.allure.sub_suite import AllureSubSuite
+from tools.allure.suite import AllureSuite
 
 
 @pytest.mark.courses
@@ -16,6 +19,9 @@ from allure_commons.types import Severity
 @allure.epic(AllureEpic.LMS) # Добавили epic
 @allure.feature(AllureFeature.COURSES) # Добавили feature
 @allure.story(AllureStory.COURSES) # Добавили story
+@allure.parent_suite(AllureParentSuite.LMS)
+@allure.suite(AllureSuite.COURSES)
+@allure.sub_suite(AllureSubSuite.COURSES)
 class TestCourses:
 
     @allure.title("Check displaying of empty courses list")

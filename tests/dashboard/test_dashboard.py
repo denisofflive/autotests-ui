@@ -7,6 +7,10 @@ from tools.allure.features import AllureFeature # Импортируем enum Al
 from tools.allure.stories import AllureStory # Импортируем enum AllureStory
 from tools.allure.tags import AllureTag
 from allure_commons.types import Severity
+from tools.allure.parent_suite import AllureParentSuite
+from tools.allure.sub_suite import AllureSubSuite
+from tools.allure.suite import AllureSuite
+
 
 
 @pytest.mark.dashboard
@@ -15,6 +19,9 @@ from allure_commons.types import Severity
 @allure.epic(AllureEpic.LMS) # Добавили epic
 @allure.feature(AllureFeature.DASHBOARD) # Добавили feature
 @allure.story(AllureStory.DASHBOARD) # Добавили story
+@allure.parent_suite(AllureParentSuite.LMS)
+@allure.suite(AllureSuite.DASHBOARD)
+@allure.sub_suite(AllureSubSuite.DASHBOARD)
 class TestDashboard:
     @allure.title("Check displaying of dashboard page")
     @allure.severity(Severity.NORMAL)
