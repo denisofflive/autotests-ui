@@ -28,6 +28,7 @@ from tools.routes import AppRoute
 class TestAuthorization:
     # Остальной код без изменений
 
+    @pytest.mark.xdist_group(name="authorization-group")
     @pytest.mark.parametrize(
         "email, password",
         [
@@ -46,6 +47,7 @@ class TestAuthorization:
         login_page.check_visible_wrong_email_or_password_alert()
 
     @allure.tag(AllureTag.USER_LOGIN)
+    @pytest.mark.xdist_group(name="authorization-group")
     @allure.title("User login with correct email and password")
     @allure.severity(Severity.BLOCKER)
     def test_successful_authorization(
