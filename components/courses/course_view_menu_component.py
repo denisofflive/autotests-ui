@@ -17,6 +17,9 @@ class CourseViewMenuComponent(BaseComponent):
     def click_edit(self, index: int):
         self.menu_button.click(nth=index)
 
+        self.edit_menu_button.check_visible(nth=index)
+        self.edit_menu_button.click(nth=index)
+
     @allure.step('Open course menu at index "{index}" and click delete')
     def click_delete(self, index: int):
         self.menu_button.click(nth=index)
