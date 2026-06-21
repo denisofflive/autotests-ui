@@ -1,4 +1,5 @@
 from playwright.sync_api import sync_playwright, expect
+from tools.routes import AppRoute
 
 with sync_playwright() as playwright:
     # Открываем браузер и создаем новую страницу

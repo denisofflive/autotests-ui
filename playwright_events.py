@@ -1,5 +1,5 @@
 from playwright.sync_api import sync_playwright, Request, Response
-
+from tools.routes import AppRoute
 
 # Логирование запросов
 def log_request(request: Request):
