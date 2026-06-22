@@ -1,0 +1,38 @@
+import allure
+import pytest
+
+from pages.dashboard.dashboard_page import DashboardPage
+from tools.allure.epics import AllureEpic # Импортируем enum AllureEpic
+from tools.allure.features import AllureFeature # Импортируем enum AllureFeature
+from tools.allure.stories import AllureStory # Импортируем enum AllureStory
+from tools.allure.tags import AllureTag
+from allure_commons.types import Severity
+from tools.allure.parent_suite import AllureParentSuite
+from tools.allure.sub_suite import AllureSubSuite
+from tools.allure.suite import AllureSuite
+from config import settings
+from tools.routes import AppRoute
+
+
+@pytest.mark.dashboard
+@pytest.mark.regression
+@allure.tag(AllureTag.REGRESSION, AllureTag.DASHBOARD)
+@allure.epic(AllureEpic.LMS) # Добавили epic
+@allure.feature(AllureFeature.DASHBOARD) # Добавили feature
+@allure.story(AllureStory.DASHBOARD) # Добавили story
+@allure.parent_suite(AllureParentSuite.LMS)
+@allure.suite(AllureSuite.DASHBOARD)
+@allure.sub_suite(AllureSubSuite.DASHBOARD)
+class TestDashboard:
+    @allure.title("Check displaying of dashboard page")
+    @allure.severity(Severity.NORMAL)
+    def test_dashboard_displaying(self, dashboard_page_with_state: DashboardPage):
+        dashboard_page_with_state.visit(AppRoute.DASHBOARD)
+        dashboard_page_with_state.navbar.check_visible(settings.test_user.username)
+        dashboard_page_with_state.navbar.check_visible("username")
+        dashboard_page_with_state.sidebar.check_visible()
+        dashboard_page_with_state.dashboard_toolbar_view.check_visible()
+        dashboard_page_with_state.check_visible_scores_chart()
+        dashboard_page_with_state.check_visible_courses_chart()
+        dashboard_page_with_state.check_visible_students_chart()
+        dashboard_page_with_state.check_visible_activities_chart()
