@@ -1,28 +1,42 @@
-import allure  # Импортируем allure
+import allure
 from playwright.sync_api import Locator, expect
 
 from elements.base_element import BaseElement
-
 from tools.logger import get_logger
+
+from ui_coverage_tool import ActionType
 
 logger = get_logger("TEXTAREA")
 
 
 class Textarea(BaseElement):
     @property
-    def type_of(self) -> str:  # Переопределяем свойство type_of
+    def type_of(self) -> str:
         return "textarea"
 
     def get_locator(self, nth: int = 0, **kwargs) -> Locator:
+        # Возвращает Playwright-локатор на первый <textarea> внутри базового элемента.
         return super().get_locator(nth, **kwargs).locator('textarea').first
+
+    def get_raw_locator(self, nth: int = 0, **kwargs) -> str:
+        """
+        Формирует и возвращает XPath-локатор, указывающий на первый элемент <textarea>
+        внутри контейнера, найденного базовым локатором.
+        """
+        base_xpath = super().get_raw_locator(nth, **kwargs)
+        # Объединяем базовый XPath с условием поиска первого дочернего <textarea>
+        return f"{base_xpath}/textarea[1]"
 
     def fill(self, value: str, nth: int = 0, **kwargs):
         step = f'Fill {self.type_of} "{self.name}" to value "{value}"'
 
-        with allure.step(f'Fill {self.type_of} "{self.name}" to value "{value}"'):
+        with allure.step(step):
             locator = self.get_locator(nth, **kwargs)
             logger.info(step)
             locator.fill(value)
+
+            # Логируем действие покрытия для заполнения поля
+            self.track_coverage(ActionType.FILL)
 
     def check_have_value(self, value: str, nth: int = 0, **kwargs):
         step = f'Checking that {self.type_of} "{self.name}" has a value "{value}"'
@@ -31,3 +45,6 @@ class Textarea(BaseElement):
             locator = self.get_locator(nth, **kwargs)
             logger.info(step)
             expect(locator).to_have_value(value)
+
+            # Логируем действие покрытия для проверки значения
+            self.track_coverage(ActionType.VALUE)
